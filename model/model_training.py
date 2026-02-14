@@ -17,24 +17,6 @@ import joblib
 # Load the dataset
 df = pd.read_csv('model/loan_data.csv')
 
-# update person_gender column as male=1 and female=0
-df['person_gender'] = df['person_gender'].map({'male': 1, 'female': 0})
-# update person_education 
-df['person_education'] = df['person_education'].map({'High School': 0, 'Associate': 1,'Bachelor': 2, 'Master': 3,'Doctorate': 4})
-
-# update previous_loan_defaults_on_file column as Yes=1 and No=0
-df['previous_loan_defaults_on_file'] = df['previous_loan_defaults_on_file'].map({'Yes': 1, 'No': 0})
-
-# One-Hot Encoding (Convert to Binary Vectors)
-
-columns_to_encode = ['person_home_ownership', 'loan_intent']
-
-df = pd.get_dummies(df, columns=columns_to_encode, prefix=columns_to_encode)
-
-# convert boolean columns to integers
-bool_cols = df.select_dtypes(include=bool).columns
-df[bool_cols] = df[bool_cols].astype(int)
-
 # Define features and target
 X = df.drop('loan_status', axis=1)
 y = df['loan_status']
@@ -45,7 +27,68 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 combined_df = pd.merge(X_test, y_test, left_index=True, right_index=True)
 combined_df.to_csv("test.csv", index=False, encoding="utf-8")
 
- 
+combined_df = pd.merge(X_train, y_train, left_index=True, right_index=True)
+combined_df.to_csv("train.csv", index=False, encoding="utf-8")
+
+df = pd.read_csv("train.csv")
+
+# update person_gender column as male=1 and female=0
+df['person_gender'] = df['person_gender'].map({'male': 1, 'female': 0})
+# update person_education 
+df['person_education'] = df['person_education'].map({'High School': 0, 'Associate': 1,'Bachelor': 2, 'Master': 3,'Doctorate': 4})
+
+# update previous_loan_defaults_on_file column as Yes=1 and No=0
+df['previous_loan_defaults_on_file'] = df['previous_loan_defaults_on_file'].map({'Yes': 1, 'No': 0})
+
+if 'person_home_ownership' in df.columns:
+
+    df['person_home_ownership_MORTGAGE'] = 0
+    df['person_home_ownership_OTHER'] = 0
+    df['person_home_ownership_OWN'] = 0
+    df['person_home_ownership_RENT'] = 0
+
+    for index, row in df.iterrows():
+        if row['person_home_ownership'] == 'MORTGAGE':
+            df.at[index, 'person_home_ownership_MORTGAGE'] = 1
+        elif row['person_home_ownership'] == 'OWN':
+            df.at[index, 'person_home_ownership_OWN'] = 1
+        elif row['person_home_ownership'] == 'RENT':
+            df.at[index, 'person_home_ownership_RENT'] = 1
+        elif row['person_home_ownership'] == 'OTHER':
+            df.at[index, 'person_home_ownership_OTHER'] = 1
+
+    df.drop(['person_home_ownership'], axis=1, inplace=True)
+
+if 'loan_intent' in df.columns:
+
+    df['loan_intent_DEBTCONSOLIDATION'] = 0
+    df['loan_intent_EDUCATION'] = 0
+    df['loan_intent_HOMEIMPROVEMENT'] = 0
+    df['loan_intent_MEDICAL'] = 0
+    df['loan_intent_PERSONAL'] = 0
+    df['loan_intent_VENTURE'] = 0
+    for index, row in df.iterrows():
+            if row['loan_intent'] == 'DEBTCONSOLIDATION':
+                df.at[index, 'loan_intent_DEBTCONSOLIDATION'] = 1
+            elif row['loan_intent'] == 'EDUCATION':
+                df.at[index, 'loan_intent_EDUCATION'] = 1
+            elif row['loan_intent'] == 'HOMEIMPROVEMENT':
+                df.at[index, 'loan_intent_HOMEIMPROVEMENT'] = 1
+            elif row['loan_intent'] == 'MEDICAL':
+                df.at[index, 'loan_intent_MEDICAL'] = 1
+            elif row['loan_intent'] == 'PERSONAL':
+                df.at[index, 'loan_intent_PERSONAL'] = 1
+            elif row['loan_intent'] == 'VENTURE':
+                df.at[index, 'loan_intent_VENTURE'] = 1
+
+    df.drop(['loan_intent'], axis=1, inplace=True)
+
+
+
+target_col = 'loan_status'
+# Prepare X and y
+X_train = df.drop(target_col, axis=1)
+y_train = df[target_col]
 
 # Initialize Logistic Regression model
 log_reg = LogisticRegression(max_iter=1000, random_state=42)

@@ -43,6 +43,60 @@ if uploaded_file is not None:
         if target_col not in df.columns:
             st.error(f"❌ Dataset must contain the target column '{target_col}' for evaluation.")
         else:
+            
+            # update person_gender column as male=1 and female=0
+            df['person_gender'] = df['person_gender'].map({'male': 1, 'female': 0})
+            
+            # update person_education 
+            df['person_education'] = df['person_education'].map({'High School': 0, 'Associate': 1,'Bachelor': 2, 'Master': 3,'Doctorate': 4})
+
+            # update previous_loan_defaults_on_file column as Yes=1 and No=0
+            df['previous_loan_defaults_on_file'] = df['previous_loan_defaults_on_file'].map({'Yes': 1, 'No': 0})
+            
+
+            if 'person_home_ownership' in df.columns:
+
+                df['person_home_ownership_MORTGAGE'] = 0
+                df['person_home_ownership_OTHER'] = 0
+                df['person_home_ownership_OWN'] = 0
+                df['person_home_ownership_RENT'] = 0
+
+                for index, row in df.iterrows():
+                    if row['person_home_ownership'] == 'MORTGAGE':
+                        df.at[index, 'person_home_ownership_MORTGAGE'] = 1
+                    elif row['person_home_ownership'] == 'OWN':
+                        df.at[index, 'person_home_ownership_OWN'] = 1
+                    elif row['person_home_ownership'] == 'RENT':
+                        df.at[index, 'person_home_ownership_RENT'] = 1
+                    elif row['person_home_ownership'] == 'OTHER':
+                        df.at[index, 'person_home_ownership_OTHER'] = 1
+            
+                df.drop(['person_home_ownership'], axis=1, inplace=True)
+
+            if 'loan_intent' in df.columns:
+
+                df['loan_intent_DEBTCONSOLIDATION'] = 0
+                df['loan_intent_EDUCATION'] = 0
+                df['loan_intent_HOMEIMPROVEMENT'] = 0
+                df['loan_intent_MEDICAL'] = 0
+                df['loan_intent_PERSONAL'] = 0
+                df['loan_intent_VENTURE'] = 0
+                for index, row in df.iterrows():
+                        if row['loan_intent'] == 'DEBTCONSOLIDATION':
+                            df.at[index, 'loan_intent_DEBTCONSOLIDATION'] = 1
+                        elif row['loan_intent'] == 'EDUCATION':
+                            df.at[index, 'loan_intent_EDUCATION'] = 1
+                        elif row['loan_intent'] == 'HOMEIMPROVEMENT':
+                            df.at[index, 'loan_intent_HOMEIMPROVEMENT'] = 1
+                        elif row['loan_intent'] == 'MEDICAL':
+                            df.at[index, 'loan_intent_MEDICAL'] = 1
+                        elif row['loan_intent'] == 'PERSONAL':
+                            df.at[index, 'loan_intent_PERSONAL'] = 1
+                        elif row['loan_intent'] == 'VENTURE':
+                            df.at[index, 'loan_intent_VENTURE'] = 1
+
+                df.drop(['loan_intent'], axis=1, inplace=True) 
+
             # Prepare X and y
             X_test = df.drop(target_col, axis=1)
             y_test = df[target_col]
