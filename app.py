@@ -109,7 +109,7 @@ if uploaded_file is not None:
             y_test = df[target_col]
             
             # Load Model
-            model_path = f"model/{selected_model_name}.pkl"
+            model_path = f"model/{selected_model_name.lower()}.joblib"
             
             try:
                 pipeline = load_model(model_path)

@@ -1,10 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.impute import SimpleImputer
-from sklearn.metrics import accuracy_score, roc_auc_score, precision_score, recall_score, f1_score, matthews_corrcoef
+
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
@@ -97,7 +93,7 @@ log_reg = LogisticRegression(max_iter=1000, random_state=42)
 log_reg.fit(X_train, y_train)
 
 # Save the model using joblib
-filename = f'model/logistic_regression.pkl'
+filename = f'model/logistic_regression.joblib'
 joblib.dump(log_reg, filename)
 print(f"Saved {filename}")
 
@@ -124,7 +120,7 @@ dt_classifier.fit(X_train, y_train)
 
 # Save the model using joblib
 
-filename = f'model/decision_tree.pkl'
+filename = f'model/decision_tree.joblib'
 joblib.dump(dt_classifier, filename)
 print(f"Saved {filename}")
 
@@ -149,7 +145,7 @@ knn_classifier.fit(X_train, y_train)
 
 # Save the model using joblib
 
-filename = f'model/knn.pkl'
+filename = f'model/knn.joblib'
 joblib.dump(knn_classifier, filename)
 print(f"Saved {filename}")
 
@@ -174,7 +170,7 @@ nb_classifier.fit(X_train, y_train)
 
 # Save the model using joblib
 
-filename = f'model/naive_bayes.pkl'
+filename = f'model/naive_bayes.joblib'
 joblib.dump(nb_classifier, filename)
 print(f"Saved {filename}")
 
@@ -199,7 +195,7 @@ rf_classifier.fit(X_train, y_train)
 
 # Save the model using joblib
 
-filename = f'model/random_forest.pkl'
+filename = f'model/random_forest.joblib'
 joblib.dump(rf_classifier, filename)
 print(f"Saved {filename}")
 
@@ -224,7 +220,7 @@ gb_classifier.fit(X_train, y_train)
 
 # Save the model using joblib
 
-filename = f'model/gradient_boosting.pkl'
+filename = f'model/gradient_boosting.joblib'
 joblib.dump(gb_classifier, filename)
 print(f"Saved {filename}")
 
