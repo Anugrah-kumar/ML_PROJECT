@@ -97,7 +97,7 @@ log_reg = LogisticRegression(max_iter=1000, random_state=42)
 log_reg.fit(X_train, y_train)
 
 # Save the model using joblib
-filename = f'model/logistic_regression.joblib'
+filename = f'model/logistic_regression.pkl'
 joblib.dump(log_reg, filename)
 print(f"Saved {filename}")
 
@@ -124,7 +124,7 @@ dt_classifier.fit(X_train, y_train)
 
 # Save the model using joblib
 
-filename = f'model/decision_tree.joblib'
+filename = f'model/decision_tree.pkl'
 joblib.dump(dt_classifier, filename)
 print(f"Saved {filename}")
 
@@ -149,7 +149,7 @@ knn_classifier.fit(X_train, y_train)
 
 # Save the model using joblib
 
-filename = f'model/knn.joblib'
+filename = f'model/knn.pkl'
 joblib.dump(knn_classifier, filename)
 print(f"Saved {filename}")
 
@@ -174,7 +174,7 @@ nb_classifier.fit(X_train, y_train)
 
 # Save the model using joblib
 
-filename = f'model/naive_bayes.joblib'
+filename = f'model/naive_bayes.pkl'
 joblib.dump(nb_classifier, filename)
 print(f"Saved {filename}")
 
@@ -199,7 +199,7 @@ rf_classifier.fit(X_train, y_train)
 
 # Save the model using joblib
 
-filename = f'model/random_forest.joblib'
+filename = f'model/random_forest.pkl'
 joblib.dump(rf_classifier, filename)
 print(f"Saved {filename}")
 
@@ -224,7 +224,7 @@ gb_classifier.fit(X_train, y_train)
 
 # Save the model using joblib
 
-filename = f'model/gradient_boosting.joblib'
+filename = f'model/gradient_boosting.pkl'
 joblib.dump(gb_classifier, filename)
 print(f"Saved {filename}")
 
