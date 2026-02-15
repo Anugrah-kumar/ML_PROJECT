@@ -7,6 +7,13 @@ import seaborn as sns
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, matthews_corrcoef, confusion_matrix
 
 
+
+@st.cache_resource
+def load_model(path):
+    if not path:
+        return None
+    return joblib.load(path)
+
 st.set_page_config(page_title="Loan Default Prediction", layout="wide")
 
 st.title("🏦 Loan Default Prediction System")
@@ -103,8 +110,9 @@ if uploaded_file is not None:
             
             # Load Model
             model_path = f"model/{selected_model_name}.pkl"
+            
             try:
-                pipeline = joblib.load(model_path)
+                pipeline = load_model(model_path)
                 
                 # Predict
                 y_pred = pipeline.predict(X_test)
