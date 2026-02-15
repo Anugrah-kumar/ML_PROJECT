@@ -166,6 +166,16 @@ if uploaded_file is not None:
 
 else:
     st.info("👋 Please upload a CSV file in the sidebar to begin analysis.")
+    st.text("Download a sample from here")
+    file_path = "test.csv"
+    with open(file_path, "rb") as file:
+        st.download_button(
+            label="📥 Download Sample CSV",
+            data=file,
+            file_name="test.csv",
+            mime="text/csv"
+        )
+
     st.markdown("""
     **Expected CSV Format:**
     - Must contain feature columns: person_age, person_gender, person_education, person_income, person_emp_exp, person_home_ownership, loan_amnt, loan_intent, loan_int_rate, loan_percent_income, cb_person_cred_hist_length, credit_score, previous_loan_defaults_on_file
